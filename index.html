@@ -89,6 +89,7 @@
       background: white;
       border: 1px solid var(--line);
       font-size: 0.9rem;
+      cursor: pointer;
     }
     .chip.active {
       background: var(--accent);
@@ -138,6 +139,8 @@
       padding: 4px 8px;
       background: #f4f4f4;
       color: var(--text);
+      cursor: pointer;
+      border: none;
     }
     .status.s1 { color: var(--accent-2); }
     .status.s2 { color: var(--accent); }
@@ -291,6 +294,7 @@
   </dialog>
 
   <script>
+    const $ = s => document.querySelector(s);
     const STATUS = {1:'To study', 2:'Studying', 3:'Done'};
     const store = {
       get(k, d) {
@@ -343,7 +347,6 @@
     }
 
     function render() {
-      // category chips
       const catBox = $('#cats');
       catBox.replaceChildren();
       const addChip = (val, label, count) => h('button', {
@@ -363,7 +366,6 @@
         }, 'Delete "' + state.cat + '"'));
       }
 
-      // status chips
       const statBox = $('#stats');
       statBox.replaceChildren();
       [['all','Any status'], ['1','To study'], ['2','Studying'], ['3','Done']].forEach(([v, label]) => {
