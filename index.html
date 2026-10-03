@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>soltanelessons</title>
+  <style>
+    :root {
+      --bg: #f4f4f4;
+      --card: #ffffff;
+      --line: #dcdcdc;
+      --text: #1f1f1f;
+      --muted: #666;
+      --accent: #db2b2b;
+      --accent-2: #f28a28;
+      --shadow: rgba(0,0,0,0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 18px 60px;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 3px solid var(--accent);
+      padding-bottom: 12px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.7rem, 3vw, 2.5rem);
+      letter-spacing: -0.04em;
+    }
+    h1 .accent {
+      color: var(--accent);
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    button, input, select, textarea {
+      font: inherit;
+    }
+    button {
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+    .primary {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: white;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    #q {
+      flex: 1;
+      min-width: 200px;
+    }
+    .chip {
+      border-radius: 999px;
+      padding: 6px 12px;
+      background: white;
+      border: 1px solid var(--line);
+      font-size: 0.9rem;
+    }
+    .chip.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-top: 4px solid var(--accent-2);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 8px 18px var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    .badge {
+      display: inline-block;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 4px 10px;
+      background: #fafafa;
+      font-size: 0.75rem;
+    }
+    .status {
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 6px;
+      padding: 4px 8px;
+      background: #f4f4f4;
+      color: var(--text);
+    }
+    .status.s1 { color: var(--accent-2); }
+    .status.s2 { color: var(--accent); }
+    .status.s3 { color: #2e7d32; }
+    .notes {
+      margin: 0;
+      color: var(--muted);
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-size: 0.76rem;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #f7f7f7;
+      color: var(--muted);
+      border: 1px solid var(--line);
+    }
+    .actions-row {
+      margin-top: auto;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding-top: 10px;
+      border-top: 1px solid var(--line);
+    }
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 40px 24px;
+      grid-column: 1 / -1;
+    }
+    dialog {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      width: min(560px, 92vw);
+      padding: 18px;
+      background: white;
+    }
+    dialog::backdrop {
+      background: rgba(0,0,0,0.45);
+    }
+    .dialog-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+    .small-text {
+      color: var(--muted);
+      font-size: 0.82rem;
+      min-height: 1.2em;
+    }
+    @media (max-width: 600px) {
+      .wrap { padding-top: 20px; }
+      header { align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>soltane<span class="accent">lessons</span></h1>
+      <div class="actions">
+        <button id="bBackup">Backup</button>
+        <button class="primary" id="bNew">+ New lesson</button>
+      </div>
+    </header>
+
+    <div class="row">
+      <input id="q" type="search" placeholder="Search lessons, notes, tags..." />
+    </div>
+
+    <div class="row" id="cats"></div>
+    <div class="row" id="stats"></div>
+    <div class="grid" id="list"></div>
+  </div>
+
+  <dialog id="dLesson">
+    <h2 id="lhead">New lesson</h2>
+    <label>Title</label>
+    <input id="fTitle" maxlength="120" />
+    <div class="row" style="margin-top: 12px;">
+      <div style="flex:1; min-width: 180px;">
+        <label>Category</label>
+        <select id="fCat"></select>
+      </div>
+      <div style="flex:1; min-width: 180px;">
+        <label>Status</label>
+        <select id="fStatus">
+          <option value="1">To study</option>
+          <option value="2">Studying</option>
+          <option value="3">Done</option>
+        </select>
+      </div>
+    </div>
+    <label>Tags (comma separated)</label>
+    <input id="fTags" placeholder="exam, formulas" />
+    <label>Link (optional)</label>
+    <input id="fUrl" placeholder="https://..." />
+    <label>Notes</label>
+    <textarea id="fNotes" placeholder="Key points, formulas, reminders..."></textarea>
+    <div id="lmsg" class="small-text" style="color:#c62828; margin-top: 10px;"></div>
+    <div class="dialog-actions">
+      <button id="lCancel">Cancel</button>
+      <button class="primary" id="lSave">Save</button>
+    </div>
+  </dialog>
+
+  <dialog id="dCat">
+    <h2>New category</h2>
+    <input id="cName" maxlength="40" placeholder="e.g. Physics" />
+    <div id="cmsg" class="small-text" style="color:#c62828; margin-top: 10px;"></div>
+    <div class="dialog-actions">
+      <button id="cCancel">Cancel</button>
+      <button class="primary" id="cSave">Add</button>
+    </div>
+  </dialog>
+
+  <dialog id="dAsk">
+    <h2 id="askText">Are you sure?</h2>
+    <div class="dialog-actions">
+      <button id="askNo">Cancel</button>
+      <button id="askYes" style="background:#c62828;color:white;border-color:#c62828;">Yes, delete</button>
+    </div>
+  </dialog>
+
+  <dialog id="dBackup">
+    <h2>Backup</h2>
+    <p class="small-text" style="margin-top:0;">Copy this text and keep it somewhere safe. To restore, paste it and click Import.</p>
+    <textarea id="json" spellcheck="false"></textarea>
+    <div id="bmsg" class="small-text" style="margin-top: 10px;"></div>
+    <div class="dialog-actions">
+      <button id="bClose">Close</button>
+      <button id="bCopy">Select all</button>
+      <button class="primary" id="bImport">Import</button>
+    </div>
+  </dialog>
+
+  <script>
+    const STATUS = {1:'To study', 2:'Studying', 3:'Done'};
+    const store = {
+      get(k, d) {
+        try {
+          const v = localStorage.getItem(k);
+          return v ? JSON.parse(v) : d;
+        } catch { return d; }
+      },
+      set(k, v) {
+        try { localStorage.setItem(k, JSON.stringify(v)); } catch {}
+      }
+    };
+
+    let cats = store.get('sl_cats', ['General','Math','Science','Languages']);
+    let lessons = store.get('sl_lessons', []);
+    const state = { cat: 'all', status: 'all', q: '' };
+    let editId = null;
+
+    function save() {
+      store.set('sl_cats', cats);
+      store.set('sl_lessons', lessons);
+    }
+
+    function h(tag, attrs = {}, ...children) {
+      const e = document.createElement(tag);
+      Object.entries(attrs).forEach(([k, v]) => {
+        if (k === 'class') e.className = v;
+        else if (k.startsWith('on')) e.addEventListener(k.slice(2), v);
+        else e.setAttribute(k, v);
+      });
+      children.flat().forEach(c => e.append(c));
+      return e;
+    }
+
+    function safeUrl(u) {
+      if (!u) return '';
+      try {
+        const x = new URL(u);
+        return (x.protocol === 'http:' || x.protocol === 'https:') ? x.href : '';
+      } catch {
+        return '';
+      }
+    }
+
+    function ask(text, yes, label = 'Yes, delete') {
+      $('#askText').textContent = text;
+      $('#askYes').textContent = label;
+      $('#askYes').onclick = () => { $('#dAsk').close(); yes(); };
+      $('#dAsk').showModal();
+    }
+
+    function render() {
+      // category chips
+      const catBox = $('#cats');
+      catBox.replaceChildren();
+      const addChip = (val, label, count) => h('button', {
+        class: 'chip ' + (state.cat === val ? 'active' : ''),
+        onclick: () => { state.cat = val; render(); }
+      }, label, h('span', { style: 'opacity:0.7; margin-left:6px;' }, String(count)));
+
+      catBox.append(addChip('all', 'All', lessons.length));
+      catBox.append(addChip('fav', '★ Favorites', lessons.filter(x => x.fav).length));
+      cats.forEach(c => catBox.append(addChip(c, c, lessons.filter(x => x.cat === c).length)));
+      catBox.append(h('button', { class: 'chip', onclick: openCat }, '+ Category'));
+      if (cats.includes(state.cat) && state.cat !== 'General') {
+        catBox.append(h('button', {
+          class: 'chip',
+          style: 'color:#c62828',
+          onclick: () => delCat(state.cat)
+        }, 'Delete "' + state.cat + '"'));
+      }
+
+      // status chips
+      const statBox = $('#stats');
+      statBox.replaceChildren();
+      [['all','Any status'], ['1','To study'], ['2','Studying'], ['3','Done']].forEach(([v, label]) => {
+        statBox.append(h('button', {
+          class: 'chip ' + (String(state.status) === v ? 'active' : ''),
+          onclick: () => { state.status = v; render(); }
+        }, label));
+      });
+
+      const q = state.q.toLowerCase();
+      const items = lessons.filter(l => {
+        const okCat = state.cat === 'all' || (state.cat === 'fav' ? l.fav : l.cat === state.cat);
+        const okStatus = state.status === 'all' || String(l.status) === state.status;
+        const okQ = !q ||
+          l.title.toLowerCase().includes(q) ||
+          (l.notes || '').toLowerCase().includes(q) ||
+          (l.tags || []).some(t => t.toLowerCase().includes(q));
+        return okCat && okStatus && okQ;
+      });
+
+      const list = $('#list');
+      list.replaceChildren();
+      if (!items.length) {
+        list.append(h('div', { class: 'empty' }, lessons.length ? 'No lessons match these filters.' : 'No lessons yet. Press "+ New lesson" to add your first one.'));
+        return;
+      }
+
+      items.forEach(l => {
+        const url = safeUrl(l.url);
+        const s = Number(l.status) || 1;
+        const card = h('div', { class: 'card' },
+          h('div', { class: 'meta' },
+            h('span', { class: 'badge' }, l.cat),
+            h('button', {
+              class: 'status s' + s,
+              title: 'Click to change status',
+              onclick: () => { l.status = s % 3 + 1; save(); render(); }
+            }, STATUS[s])
+          ),
+          h('h3', {}, l.title),
+          l.notes ? h('p', { class: 'notes' }, l.notes) : '',
+          (l.tags && l.tags.length) ? h('div', { class: 'tags' }, l.tags.map(t => h('span', { class: 'tag' }, '#' + t))) : '',
+          h('div', { class: 'actions-row' },
+            h('button', {
+              class: 'star',
+              title: 'Favorite',
+              onclick: () => { l.fav = !l.fav; save(); render(); }
+            }, l.fav ? '★' : '☆'),
+            url ? h('a', { class: 'btn', href: url, target: '_blank', rel: 'noopener noreferrer', style: 'text-decoration:none; border:1px solid var(--line); border-radius:10px; padding:8px 12px; color:inherit;' }, 'Open link') : '',
+            h('button', { onclick: () => openLesson(l.id) }, 'Edit'),
+            h('button', { onclick: () => ask('Delete "' + l.title + '"?', () => { lessons = lessons.filter(x => x.id !== l.id); save(); render(); }) }, 'Delete')
+          )
+        );
+        list.append(card);
+      });
+    }
+
+    function openCat() {
+      $('#cName').value = '';
+      $('#cmsg').textContent = '';
+      $('#dCat').showModal();
+      $('#cName').focus();
+    }
+
+    function saveCat() {
+      const name = $('#cName').value.trim();
+      if (!name) {
+        $('#cmsg').textContent = 'Please enter a name.';
+        return;
+      }
+      if (cats.some(c => c.toLowerCase() === name.toLowerCase())) {
+        $('#cmsg').textContent = 'That category already exists.';
+        return;
+      }
+      cats.push(name);
+      state.cat = name;
+      save();
+      render();
+      $('#dCat').close();
+    }
+
+    function delCat(name) {
+      const n = lessons.filter(l => l.cat === name).length;
+      ask('Delete category "' + name + '"?' + (n ? ' Its ' + n + ' lesson(s) will move to General.' : ''), () => {
+        lessons.forEach(l => {
+          if (l.cat === name) l.cat = 'General';
+        });
+        cats = cats.filter(c => c !== name);
+        state.cat = 'all';
+        save();
+        render();
+      });
+    }
+
+    function fillCats(selected) {
+      const sel = $('#fCat');
+      sel.replaceChildren();
+      cats.forEach(c => sel.append(h('option', { value: c }, c)));
+      sel.value = selected && cats.includes(selected) ? selected : cats[0];
+    }
+
+    function openLesson(id) {
+      editId = id || null;
+      const l = id ? lessons.find(x => x.id === id) : null;
+      $('#lhead').textContent = l ? 'Edit lesson' : 'New lesson';
+      $('#fTitle').value = l ? l.title : '';
+      fillCats(l ? l.cat : 'General');
+      $('#fStatus').value = l ? String(l.status || 1) : '1';
+      $('#fTags').value = l ? (l.tags || []).join(', ') : '';
+      $('#fUrl').value = l ? (l.url || '') : '';
+      $('#fNotes').value = l ? (l.notes || '') : '';
+      $('#lmsg').textContent = '';
+      $('#dLesson').showModal();
+      $('#fTitle').focus();
+    }
+
+    function saveLesson() {
+      const title = $('#fTitle').value.trim();
+      const rawUrl = $('#fUrl').value.trim();
+      if (!title) {
+        $('#lmsg').textContent = 'Please enter a title.';
+        return;
+      }
+      if (rawUrl && !safeUrl(rawUrl)) {
+        $('#lmsg').textContent = 'The link must start with http:// or https://';
+        return;
+      }
+
+      const data = {
+        title,
+        cat: $('#fCat').value,
+        status: Number($('#fStatus').value),
+        tags: $('#fTags').value.split(',').map(t => t.trim()).filter(Boolean),
+        url: rawUrl,
+        notes: $('#fNotes').value.trim(),
+        fav: false
+      };
+
+      if (editId) {
+        const current = lessons.find(x => x.id === editId);
+        if (current) Object.assign(current, data);
+      } else {
+        lessons.unshift({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 8), ...data });
+      }
+
+      save();
+      render();
+      $('#dLesson').close();
+    }
+
+    function openBackup() {
+      $('#json').value = JSON.stringify({ cats, lessons }, null, 2);
+      $('#bmsg').textContent = '';
+      $('#dBackup').showModal();
+    }
+
+    function importBackup() {
+      try {
+        const d = JSON.parse($('#json').value);
+        const nc = Array.isArray(d.cats) ? d.cats.filter(Boolean) : [];
+        const nl = Array.isArray(d.lessons) ? d.lessons.filter(l => l && typeof l.title === 'string').map(l => ({
+          id: String(l.id || Date.now().toString(36) + Math.random().toString(36).slice(2, 8)),
+          title: l.title,
+          cat: l.cat || 'General',
+          status: Number(l.status) || 1,
+          tags: Array.isArray(l.tags) ? l.tags.map(String) : [],
+          url: safeUrl(l.url),
+          notes: String(l.notes || ''),
+          fav: !!l.fav
+        })) : [];
+
+        if (!nc.length && !nl.length) throw new Error('empty');
+        cats = [...new Set(['General', ...nc, ...nl.map(l => l.cat)])];
+        lessons = nl;
+        state.cat = 'all';
+        state.status = 'all';
+        save();
+        render();
+        $('#bmsg').style.color = '#2e7d32';
+        $('#bmsg').textContent = 'Imported ' + nl.length + ' lesson(s).';
+      } catch {
+        $('#bmsg').style.color = '#c62828';
+        $('#bmsg').textContent = 'That is not a valid backup.';
+      }
+    }
+
+    $('#bNew').onclick = () => openLesson();
+    $('#bBackup').onclick = openBackup;
+    $('#lCancel').onclick = () => $('#dLesson').close();
+    $('#lSave').onclick = saveLesson;
+    $('#cCancel').onclick = () => $('#dCat').close();
+    $('#cSave').onclick = saveCat;
+    $('#cName').addEventListener('keydown', e => { if (e.key === 'Enter') saveCat(); });
+    $('#askNo').onclick = () => $('#dAsk').close();
+    $('#bClose').onclick = () => $('#dBackup').close();
+    $('#bCopy').onclick = () => { $('#json').focus(); $('#json').select(); };
+    $('#bImport').onclick = importBackup;
+    $('#q').addEventListener('input', e => { state.q = e.target.value; render(); });
+
+    render();
+  </script>
+</body>
+</html>
